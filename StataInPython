@@ -1,19 +1,29 @@
 STATA command                                         Python command
-                                                      import pandas as pd      
+                                                      import pandas as pd
+                                                      DF represents DataFrame
                                                       
 reshape wide/long                                     pd.unstack/stack
 
-merge                                                 pd.merge, DataFrame.join
+merge                                                 pd.merge, DF.join
 
-append                                                DataFrame.append
+append                                                DF.append
 
 replace var = ... if condition                        pd[var][condition] = ...
 
 rename var1 name1 
-rename var2 name2                                     DataFrame.rename(columns = {'var': 'name1', 'var2': 'name2'}, inplace = True)
+rename var2 name2                                     DF.rename(columns = {'var': 'name1', 'var2': 'name2'}, inplace = True)
 
-drop var                                              del DataFrame[var]
+drop var                                              del DF[var]
 
-drop if condition                                     DataFrame = DataFrame[condition]
+drop if condition                                     DF = DF[condition]
 
-table var1 var2, content(stats of var3)               DataFrame.groupby(['var1', 'var2'])['var3'].agg([stats])
+table var1 var2, content(stats of var3)               DF.groupby(['var1', 'var2'])['var3'].agg([stats])
+
+bysort v1 v2: egen new = function(v4)                 import numpy as np
+                                                      grp = DF.groupby(['v1', 'v2'])['v4']
+                                                      DF['new'] = pd.Series(np.repeat(grp.function, group.size().values), index = DF.index)
+                                                      
+                                                      OR just perform a one-to-many merge, as DF.groupby creates a DataFrame 
+                                                      with index ['v1', 'v2']:
+                                                      new = DF.group(['v1', 'v2'])['v4'].function
+                                                      DF = DF.join(new, on = ['v1', 'v2'])
