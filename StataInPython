@@ -2,7 +2,7 @@ STATA command                                         Python command
                                                       import pandas as pd
                                                       DF represents DataFrame
                                                       
-reshape wide/long                                     pd.unstack/stack
+reshape wide/long                                     DF.unstack/stack
 
 merge                                                 pd.merge, DF.join
 
